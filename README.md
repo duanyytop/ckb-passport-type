@@ -1,2 +1,13 @@
-# ckb-passport-type
-E-Passport type script to verify ICAO CA on Nervos CKB
+# ckb-passport-identity
+
+Build contracts:
+
+``` sh
+capsule build
+```
+
+Run tests:
+
+``` sh
+capsule test
+```

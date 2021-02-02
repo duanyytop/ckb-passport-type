@@ -1,3 +1,4 @@
+use alloc::vec::Vec;
 use crate::alloc::{
     alloc::{alloc, Layout},
     boxed::Box,
@@ -85,7 +86,6 @@ impl LibRSA {
 
     pub fn validate_signature(
         &self,
-        prefilled_data: &PrefilledData,
         signature: &[u8],
         message: &[u8],
     ) -> Result<PubkeyHash, i32> {
@@ -95,7 +95,7 @@ impl LibRSA {
         let f = &self.validate_signature;
         let error_code = unsafe {
             f(
-                prefilled_data.0.as_ptr(),
+                Vec::new().as_ptr(),
                 signature.as_ptr(),
                 signature.len() as u64,
                 message.as_ptr(),

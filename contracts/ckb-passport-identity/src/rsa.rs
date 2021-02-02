@@ -7,7 +7,7 @@ pub fn verify_rsa(lib: &LibRSA, n: &[u8], e: u32, msg: &[u8], sig: &[u8]) -> Res
     let rsa_info = generate_rsa_info(&n, e, &sig)?;
     match lib.validate_signature(rsa_info.as_ref(), &msg) {
       Ok(_) => Ok(()),
-      Err(err) => Err(Error::RSAVerifyError)
+      Err(_) => Err(Error::RSAVerifyError)
     }
 }
 

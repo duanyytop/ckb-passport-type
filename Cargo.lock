@@ -449,6 +449,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "ckb-lib-rsa"
+version = "0.1.0"
+dependencies = [
+ "blake2b-rs",
+ "ckb-std",
+]
+
+[[package]]
 name = "ckb-librocksdb-sys"
 version = "6.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -521,6 +529,7 @@ dependencies = [
 name = "ckb-passport-identity"
 version = "0.1.0"
 dependencies = [
+ "ckb-lib-rsa",
  "ckb-std",
 ]
 

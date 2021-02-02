@@ -3,30 +3,39 @@ use core::result::Result;
 use alloc::{vec, vec::Vec};
 
 use ckb_std::{
-    debug,
-    high_level::{load_script, load_tx_hash},
+    high_level::load_cell_data,
+    dynamic_loading::CKBDLContext,
     ckb_types::{bytes::Bytes, prelude::*},
 };
 
 use crate::error::Error;
+use super::rsa;
+
+const MSG_LEN: usize = 32;
+const SIGNATURE_LEN: usize = 512;
+const PUBLIC_KEY_E_LEN: usize = 4; 
+const PUBLIC_KEY_N_LEN: usize = 128;
+const DATA_LEN: usize = 676;
 
 pub fn main() -> Result<(), Error> {
-    // remove below examples and write your code here
+    let mut context = unsafe { CKBDLContext::<[u8; 1024 * 128]>::new() };
 
-    let script = load_script()?;
-    let args: Bytes = script.args().unpack();
-    debug!("script args is {:?}", args);
-
-    // return an error if args is invalid
-    if args.is_empty() {
-        return Err(Error::MyError);
+    let data = load_cell_data()?;
+    if data.len() != DATA_LEN {
+        return Err(Error::DataLenError);
     }
+    
+    let mut pub_key_e = [0u8; PUBLIC_KEY_E_LEN];
+    let mut pub_key_n = [0u8; PUBLIC_KEY_N_LEN];
+    let mut message = [0u8; MSG_LEN];
+    let mut signature = [0u8; SIGNATURE_LEN];
+    pub_key_e.copy_from_slice(&data[0..PUBLIC_KEY_E_LEN]);
+    pub_key_n.copy_from_slice(&data[PUBLIC_KEY_E_LEN..(PUBLIC_KEY_E_LEN + PUBLIC_KEY_N_LEN)]);
+    message.copy_from_slice(&data[(PUBLIC_KEY_E_LEN + PUBLIC_KEY_N_LEN)..(DATA_LEN - SIGNATURE_LEN)]);
+    signature.copy_from_slice(&data[(DATA_LEN - SIGNATURE_LEN)..]);
 
-    let tx_hash = load_tx_hash()?;
-    debug!("tx hash is {:?}", tx_hash);
+    let lib = ckb_lib_rsa::LibRSA::load(&mut context);
 
-    let _buf: Vec<_> = vec![0u8; 32];
-
-    Ok(())
+    rsa::verify_rsa(lib, pub_key_n, pub_key_e, message, signature)
 }
 

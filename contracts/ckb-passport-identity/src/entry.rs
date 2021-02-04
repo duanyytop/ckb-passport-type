@@ -13,7 +13,7 @@ const MSG_LEN: usize = 32;
 const SIGNATURE_LEN: usize = 512;
 const PUBLIC_KEY_E_LEN: usize = 4; 
 const PUBLIC_KEY_N_LEN: usize = 512;
-const DATA_LEN: usize = 676;
+const DATA_LEN: usize = 1060;
 
 pub fn main() -> Result<(), Error> {
     let mut context = unsafe { CKBDLContext::<[u8; 1024 * 128]>::new() };

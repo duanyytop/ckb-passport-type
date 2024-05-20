@@ -7,3 +7,5 @@ edition = "2018"
 
 [dependencies]
 ckb-std = "0.7.1"
+ckb-lib-rsa = { path = "../../ckb-lib-rsa" }
+

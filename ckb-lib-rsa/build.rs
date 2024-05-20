@@ -10,7 +10,7 @@ const BUF_SIZE: usize = 8 * 1024;
 const CKB_HASH_PERSONALIZATION: &[u8] = b"ckb-default-hash";
 
 fn main() {
-    let path = Path::new("../ckb-miscellaneous-scripts/build/secp256k1_blake2b_sighash_all_dual");
+    let path = Path::new("../ckb-production-scripts/build/validate_signature_rsa");
 
     if !path.exists() {
         // do nothing if binary is not exists
@@ -39,7 +39,7 @@ fn main() {
 
     write!(
         &mut out_file,
-        "pub const CODE_HASH_SECP256K1: [u8; 32] = {:?};\n",
+        "pub const CODE_HASH_RSA: [u8; 32] = {:?};\n",
         hash
     )
     .expect("write to code_hashes.rs");
